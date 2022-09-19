@@ -1,0 +1,112 @@
+{
+    "recipes": [{
+        "name": "계란죽",
+        "age": [2],
+        "disease": [2, 3],
+        "favor": [5],
+        "level": 1,
+        "tools": [],
+        "hard": 1,
+        "allergy": [2]
+    },
+    {
+        "name": "계란찜",
+        "age": [2],
+        "disease": [1, 2, 3],
+        "favor": [4, 5],
+        "level": 1,
+        "tools": [1],
+        "hard": 1,
+        "allergy": [2]
+    },
+    {
+        "name": "고구마만쥬",
+        "age": [],
+        "disease": [3],
+        "favor": [4],
+        "level": 3,
+        "tools": [2, 3],
+        "hard": 2,
+        "allergy": [2]
+    },
+    {
+        "name": "김밥",
+        "age": [1, 2, 3],
+        "disease": [1, 2],
+        "favor": [1, 5],
+        "level": 4,
+        "tools": [2],
+        "hard": 2,
+        "allergy": [1]
+    },
+    {
+        "name": "리코타치즈",
+        "age": [],
+        "disease": [],
+        "favor": [],
+        "level": 2,
+        "tools": [],
+        "hard": 1,
+        "allergy": [4]
+    },
+    {
+        "name": "멍치킨",
+        "age": [1, 2],
+        "disease": [1, 2, 3],
+        "favor": [1, 4],
+        "level": 3,
+        "tools": [3],
+        "hard": 2,
+        "allergy": [1, 2]
+    },
+    {
+        "name": "소고기무국",
+        "age": [1],
+        "disease": [2],
+        "favor": [3, 5],
+        "level": 1,
+        "tools": [],
+        "hard": 1,
+        "allergy": [3]
+    },
+    {
+        "name": "소시지",
+        "age": [1, 2, 3],
+        "disease": [1, 2],
+        "favor": [1, 5],
+        "level": 2,
+        "tools": [],
+        "hard": 2,
+        "allergy": [1]
+    },
+    {
+        "name": "아이스크림",
+        "age": [1, 2],
+        "disease": [1, 2],
+        "favor": [4],
+        "level": 2,
+        "tools": [1],
+        "hard": 3,
+        "allergy": [4]
+    },
+    {
+        "name": "치즈볼",
+        "age": [1, 2, 3],
+        "disease": [1, 2, 3],
+        "favor": [1, 4],
+        "level": 3,
+        "tools": [2, 3],
+        "hard": 2,
+        "allergy": [1, 2]
+    },
+    {
+        "name": "피자",
+        "age": [1, 2, 3],
+        "disease": [1, 2],
+        "favor": [1, 4, 5],
+        "level": 4,
+        "tools": [3],
+        "hard": 2,
+        "allergy": [1]
+    }]
+}
