@@ -13,9 +13,9 @@ class Recipe:
         self.hard = json_data['hard']
         self.allergy = json_data['allergy']
     
-    def check(recipe_elememt, user_element):
-        for l in recipe_elememt:
-            if l in user_element:
+    def check(self, recipe_elememt, user_element):
+        for r in recipe_elememt:
+            if r in user_element:
                 return True
         return False
 
@@ -88,4 +88,6 @@ for i in range(2, 94):
     user = User(breed=breed, age=age, disease=disease, favor=favor, tools=tools, allergy=allergy)
     users.append(user)
 
-print(users)
+for recipe in recipe_list:
+    user = users[0]
+    print(recipe.filter(user))
