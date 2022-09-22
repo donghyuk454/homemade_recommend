@@ -6,13 +6,16 @@ small_breeds = ["스피츠", "시츄", "요크셔테리어", "말티즈", "닥�
 class Recipe:
     def __init__(self, json_data):
         self.name = json_data['name']
-        self.age = json_data['age'] # score 를 위해 추가
+        self.age = json_data['age'] 
         self.disease = json_data['disease']
         self.favor = json_data['favor'] # score 를 위해 추가
         self.tools = json_data['tools']
         self.hard = json_data['hard']
         self.allergy = json_data['allergy']
     
+    def get_name(self):
+        return self.name
+
     def check(self, recipe_elememt, user_element):
         for r in recipe_elememt:
             if r in user_element:
@@ -88,6 +91,10 @@ for i in range(2, 94):
     user = User(breed=breed, age=age, disease=disease, favor=favor, tools=tools, allergy=allergy)
     users.append(user)
 
+results = []
+user = users[0]
+
 for recipe in recipe_list:
-    user = users[0]
-    print(recipe.filter(user))
+    results.append([recipe.get_name(), recipe.filter(user)])
+
+print(results)
