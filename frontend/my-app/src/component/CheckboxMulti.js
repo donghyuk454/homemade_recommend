@@ -12,17 +12,31 @@ const CheckboxMulti = (props) => {
 
   const handler = props.handler;
 
+  const getIndex = (value) => {
+    for (var i = 0; i < formData.length; i++) {
+      if (formData[i].name === value) {
+        return formData[i].id;
+      }
+    }
+    return -1;
+  }
+
   const checkedItemHandler = (box, id, isChecked) => {
       if (isChecked) {
+        const idx = getIndex(id);
+        if (idx === -1) {
+          return checkedItems;
+        }
         checkedItems.add(id);
         setCheckedItems(checkedItems);
-        
+        console.log(id);
         let newIds = [];
         for (var i = 0; i < ids.length; i++) {
           newIds.push(ids[i]);
         }
-        newIds.push(parseInt(id));
+        newIds.push(idx);
         setIds(newIds);
+        console.log(newIds);
         handler(newIds);
       } else if (!isChecked && checkedItems.has(id)) {
         checkedItems.delete(id);
@@ -32,9 +46,15 @@ const CheckboxMulti = (props) => {
         for (var i = 0; i < ids.length; i++) {
           newIds.push(ids[i]);
         }
-        newIds.delete(parseInt(id));
-        setIds(newIds);
-        handler(newIds);
+        let delete_idx = getIndex(id);
+        let arr = newIds.filter(function(data) {
+          return data != delete_idx;
+        });
+
+        console.log(newIds);
+        console.log(newIds);
+        setIds(arr);
+        handler(arr);
       }
       return checkedItems;
     };

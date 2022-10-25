@@ -1,16 +1,17 @@
 import React, {Component} from 'react';
 import { Link } from "react-router-dom";
-import Checkbox from './component/Checkbox';
-import {Dropdown} from 'react-bootstrap';
+import axios from 'axios';
+import {Button, Dropdown} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import CheckboxMulti from './component/CheckboxMulti';
 
-const url = "";
+const url = "http://localhost:5000";
 
 function Main() {
-    const [surveyTwo, setSurveyTwo] = React.useState("입력해 주세요");
-    const [surveyTwoClicked, setSurveyTwoClicked] = React.useState(0);
+    const [result, setResult] = React.useState([]);
+    const [breed, setBreed] = React.useState("입력해 주세요");
+    const [breedClicked, setBreedClicked] = React.useState(0);
   
     const dogBreedDic = ["믹스견", "스피츠", "시츄", "요크셔테리어", "말티즈", "포메라니안", "푸들", "치와와", "미니핀", "슈나우저", "페키니즈", "닥스훈트", "빠삐용",
     "비숑 프리제", "보스턴 테리어", "샤페이", "웰시코기", "비글", "코카스파니엘", "불독", "사모예드", "피레니즈", "리트리버", "말라뮤트", "한국 토종견", "허스키", "세퍼트",
@@ -18,7 +19,7 @@ function Main() {
     const [dogBreedArr, setDogBreedArr] = React.useState([]);
 
     // 견종 선택
-    const handleTextSurveyTwo = (event) => {
+    const handleTextbreed = (event) => {
       if (event.target.value){
           setDogBreedArr([]);
           const regex = new RegExp(event.target.value, 'i');
@@ -32,33 +33,33 @@ function Main() {
       if(event.target.value.length <= 20)
       {
           let val = event.target.value.replace(/\n/g, "");
-          setSurveyTwo(val);
+          setBreed(val);
       }
     };
   
-    function clickSurveyTwo(){
-      if (surveyTwo === "입력해 주세요"){
-          setSurveyTwo("");
+    function clickbreed(){
+      if (breed === "입력해 주세요"){
+          setBreed("");
       }
-      setSurveyTwoClicked(1);
+      setBreedClicked(1);
     };
   
-    function clickSurveyTwoBlur(){
-      if (surveyTwo === ""){
-          setSurveyTwo("입력해 주세요");
+    function clickbreedBlur(){
+      if (breed === ""){
+          setBreed("입력해 주세요");
       }
-      setSurveyTwoClicked(0);
+      setBreedClicked(0);
     };
   
-    const getBreedArray = (surveyTwo) =>{
-      if (surveyTwo){
+    const getBreedArray = (breed) =>{
+      if (breed){
           setDogBreedArr([]);
-          const regex = new RegExp(surveyTwo, 'i');
+          const regex = new RegExp(breed, 'i');
       }
     };
   
     function setBreedButton(name){
-      setSurveyTwo(name);
+      setBreed(name);
       setDogBreedArr([]);
     };
 
@@ -102,21 +103,31 @@ function Main() {
         {id:5, name: "인덕션"}
     ]
 
-    const [name, setName] = React.useState("");
+    const orderFormData = [
+        {id:0, name: "계란죽"},
+        {id:1, name: "계란찜"},
+        {id:2, name: "고구마만쥬"},
+        {id:3, name: "김밥"},
+        {id:4, name: "리코타치즈"},
+        {id:5, name: "멍치킨"},
+        {id:6, name: "소고기무국"},
+        {id:7, name: "소시지"},
+        {id:8, name: "아이스크림"},
+        {id:9, name: "치즈볼"},
+        {id:10, name: "피자"}
+    ]
+    const recipeName = ["계란죽","계란찜","고구마만쥬","김밥","리코타치즈","멍치킨","소고기무국","소시지","아이스크림","치즈볼","피자"]
+
     const [age, setAge] = React.useState(0);
-    const [userage, setUserage] = React.useState(1);
     const [disease, setDisease] = React.useState([]);
     const [allergy, setAllergy] = React.useState([]);
     const [favor, setFavor] = React.useState([]);
     const [tool, setTool] = React.useState([]);
     const [data, setData] = React.useState({});
-    
-    const handleUserage = (age) => {
-        setUserage(age);
-        setData(getData());
-    }
+    const [order, setOrder] = React.useState([]);
 
     const handleDisease = (value) => {
+        console.log(value);
         setDisease(value);
         setData(getData());
     }
@@ -136,8 +147,12 @@ function Main() {
         setData(getData());
     }
 
-    const changeName = (e) => {
-        setName(e.target.value);
+    const handleOrder = (value) => {
+        const new_list = new Array()
+        for(var i = 0; i < value.length; i++) {
+            new_list[i] = recipeName[i]
+        }
+        setOrder(new_list);
         setData(getData());
     }
 
@@ -154,43 +169,41 @@ function Main() {
     }
 
     const getData = () => {
-        let sex = false;
-        if (document.getElementById("male").checked){
-            sex = true
-        }
-
         return {
-            dogname: name,
-            dogage: age,
-            sex: sex,
-            userage: userage,
+            age: age,
+            breed: breed,
             disease: disease,
             allergy: allergy,
             favor: favor,
-            tool: tool
+            tool: tool,
+            order: order
         }
+    }
+
+    let getResult = () => {
+        const data = getData();
+        console.log(data)
+        axios.post(url+"/recommend", {
+            params: data
+        }).then((response) => {
+            console.log(response);
+            const data = response.data.recipes;
+            const component_list = [];
+            for (var i = 0; i < data.length; i++) {
+                const component = <li>{data[i]}</li>;
+                
+                component_list.push(component);
+            }
+            
+            setResult(component_list);
+            
+        });
     }
   
     return (
         <div>
             <h1>강아지 정보 입력</h1>
-                <div>
-                    <h3>성별을 선택해주세요.</h3>
-                    <p id='sex'>
-                        <label for="male">남성</label>
-                        <input id="male" type="radio" value="남성" name="ss"></input>
-                        <label for="female">여성</label>
-                        <input id="female" type="radio" value="여성" name="ss"></input>
-                    </p>
-                </div>
-            <div>
-                <h3>연령대를 선택해주세요.</h3>
-                <Checkbox formData={userAgeFormData} handler={handleUserage}></Checkbox>
-            </div>
-            <div>
-                <h3>강아지의 이름을 입력해주세요.</h3>
-                <input type="text" placeholder='아름' value={name} onChange={changeName}/>
-            </div>
+
             <div>
                 <h3>강아지의 나이를 입력해주세요. (단위: 개월)</h3>
                 <input type="text" placeholder='나이' value={age} onChange={changeAge}/>
@@ -200,7 +213,7 @@ function Main() {
                 <div className = "Q2" style = {{display:'flex', flexDirection: 'column', alignItems: 'center'}}>
                     <form>
                         <div>
-                            <textarea value={surveyTwo} onChange = {handleTextSurveyTwo} onClick = {() => {clickSurveyTwo()}} onBlur = {() => {clickSurveyTwoBlur()}} />
+                            <textarea value={breed} onChange = {handleTextbreed} onClick = {() => {clickbreed()}} onBlur = {() => {clickbreedBlur()}} />
                         </div>
                     </form>
                     <Dropdown style={{display: 'flex', flexDirection: 'column', overflowY: 'scroll'}}>
@@ -231,8 +244,16 @@ function Main() {
                 <h3>사용 가능한 집기를 선택해주세요.</h3>
                 <CheckboxMulti formData={toolFormData} handler={handleTool}></CheckboxMulti>
             </div>
-            <Link to="/menu" state={{hello:"hello", data: data}}>넘어가기</Link>
+            <div>
+                <h3>관심있는 메뉴를 골라주세요.</h3>
+                <CheckboxMulti formData={orderFormData} handler={handleOrder}></CheckboxMulti>
+            </div>
+            <Button onClick={getResult}>결과 저장</Button>
+            <ol style={{marginTop: 50}}>
+                {result}
+            </ol>
         </div>
+        
     );
 }
 
