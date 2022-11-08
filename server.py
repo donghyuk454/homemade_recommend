@@ -46,13 +46,19 @@ class Recipe:
             if r in user_element:
                 return True
         return False
+    
+    def check_for_tool(self, recipe_tool, user_tool):
+        for t in recipe_tool:
+            if t not in user_tool:
+                return True
+        return False
 
     def filter(self, user):
         if self.check(self.disease, user.disease):
             print(self.name+"제외, 이유 : 질병")
             return False
 
-        if not self.check(self.tool, user.tool):
+        if self.check_for_tool(self.tool, user.tool):
             print(self.name+"제외, 이유 : 집기")
             return False
 
